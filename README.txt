@@ -17,3 +17,6 @@ b.使用static
 由原来的0.0000001改为0.007
 
 5.新加克隆groupnumber属性
+
+6.修改一致性需求维护标签
+（或者next version或future version或both them）
