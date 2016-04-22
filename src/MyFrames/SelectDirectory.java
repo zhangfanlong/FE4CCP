@@ -87,7 +87,7 @@ public class SelectDirectory extends Dialog {
 				dlg.setText("Directory");
 				dlg.setMessage("Please select source codes directory!");
 				//dlg.setFilterPath("C:/Users/YueYuan/Desktop/SubjectSys_dnsjava");//去掉后默认同赵文
-				dlg.setFilterPath("E:/Work/Work-毕设/experiment/Source/SubjectSys_dnsjava");
+				dlg.setFilterPath("D:\\Work\\Research\\博士课题(Code Clones）\\1Paper\\8基于变化的克隆一致性维护需求预测\\experiment\\0源代码和克隆检测结果\\SubjectSys_jEdit");
 				sourceCodes.setText(dlg.open());
 			}
 		});
@@ -108,7 +108,7 @@ public class SelectDirectory extends Dialog {
 				dlg.setText("Directory");
 				dlg.setMessage("Please select clone results directory!");
 				//dlg.setFilterPath("C:/Users/YueYuan/Desktop/dnsjava-results");
-				dlg.setFilterPath("E:/Work/Work-毕设/experiment/DetectionResults/dnsjava-results");
+				dlg.setFilterPath("D:\\Work\\Research\\博士课题(Code Clones）\\1Paper\\8基于变化的克隆一致性维护需求预测\\experiment\\0源代码和克隆检测结果\\jEdit-_results");
 				cloneResults.setText(dlg.open());
 			}
 			
