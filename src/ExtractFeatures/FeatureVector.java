@@ -3,28 +3,31 @@ package ExtractFeatures;
 public class FeatureVector {
 	
 	//代码特征
-	private int sourceLine;
+	private int sourceLine;//克隆组代码行数
+	private int fragCount; //克隆组数量
+
 	//四个heathed度量
 	private int uniOPERATORCount;//唯一操作符数量，即操作符种类
     private int uniOperandCount;//唯一操作数数量，即操作数种类
     private int totalOPERATORCount;//操作符总量
     private int totalOperandCount;//操作数总量   
+    
     //函数信息
-  	private int totalMethodInvocCount;
-  	private int libraryMethodInvocCount;
-  	private int localMethodInvocCount;
-  	private int otherMethodInvocCount;
-  	private int totalParameterCount;
+  	private int totalMethodInvocCount;//函数调用
+  	private int libraryMethodInvocCount;//库函数调用
+  	private int localMethodInvocCount;//本地函数调用
+  	private int otherMethodInvocCount;//其他调用
+  	private int totalParameterCount;//总参数个数
   	
   	//目的特征
-  	private boolean isLocalClone;
-  	private float simFileName;
-  	private float simMaskedFileName;
+  	private boolean isLocalClone;//是否是函数克隆
+  	private float simFileName;//文件名相似度
+  	private float simMaskedFileName;//文件名相似度MASK
   	
-  	private float simMethodName;
-  	private float simTotalParaName;
-  	private float simMaxParaName;
-  	private float simTotalParaType;
+  	private float simMethodName;//方法名相似度
+  	private float simTotalParaName;//参数名相似度之和
+  	private float simMaxParaName;//最大参数名相似度
+  	private float simTotalParaType;//
   	
   	private boolean isSameBlockInfo;//..................
   	private double simCloneFragments;//..................
@@ -40,6 +43,7 @@ public class FeatureVector {
   	private int[] evoPattern;
   	private int age;
   	
+  	
   	public int[] getEvoPattern() {
 		return evoPattern;
 	}
@@ -53,6 +57,15 @@ public class FeatureVector {
 	public void setSourceLine(int sourceLine) {
 		this.sourceLine = sourceLine;
 	}
+	
+	public int getFragCount() {
+		return fragCount;
+	}
+	public void setFragCount(int fragCount) {
+		this.fragCount = fragCount;
+	}
+	
+	
 	public int getUniOPERATORCount() {
 		return uniOPERATORCount;
 	}

@@ -82,6 +82,7 @@ public class WekaOperations {
         	atts.addElement(new Attribute("INCONSISTENTCHANGE"));
         	
         	atts.addElement(new Attribute("cloneAge"));
+        	atts.addElement(new Attribute("fragmentCount"));
         }
         
         //Ò»ÖÂÐÔÎ¬»¤label
@@ -135,6 +136,7 @@ public class WekaOperations {
 				vals[33] = vec.getEvoPattern()[5];
 				vals[34] = vec.getEvoPattern()[6];	
 				vals[35] = vec.getAge();	
+				vals[36] = vec.getFragCount();
 			}
 			
 			vals[vals.length-1] = vec.getConsistence();

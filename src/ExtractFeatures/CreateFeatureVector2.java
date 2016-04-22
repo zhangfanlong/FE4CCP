@@ -28,6 +28,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 	
 	//几个片段总的
 	private int souceLines;
+	private int fragCount;
 	private int paraCount;
 	private int totalMethodInvocCount;
 	private int localMethodInvocCount;
@@ -52,6 +53,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 		consist=0;
 		age = 0;
 		souceLines = 0;
+		fragCount = 0;
 		paraCount = 0;
 		totalMethodInvocCount = 0;
 		localMethodInvocCount = 0;
@@ -93,7 +95,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					group = FindCLoneGroup(evo.getSrcVersion(),evo.getSrcCGID()); //上一版本抽取
 					this.featureVector = new FeatureVector();
 					
-					ExtractForGroup(group);
+					ExtractForGroup(group);//提取发生变化的克隆组属性
 					
 					//判断模式及一致性需求
 					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
@@ -140,6 +142,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 	private void ExtractForGroup(CloneGroup group){	
 		init();
 		int length = group.getClonefragment().size();
+		this.featureVector.setFragCount(length);
 		for(int i=0;i<length;i++){
 			//代码和结构特征
 			StatCodeAndStrucFeature(group.getClonefragment().get(i));
