@@ -97,26 +97,6 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					
 					ExtractForGroup(group);//提取发生变化的克隆组属性
 					
-					//判断模式及一致性需求
-					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-							evo.getCgPattern().contains("CONSISTENTCHANGE")) {consist = 1;}
-					else if(evo.getCgPattern().contains("INCONSISTENTCHANGE")) {
-						consist = 0;
-						while(evo.getChildID()!=null){
-							for(GenealogyEvolution tempEvo : genEvoList){
-								if(tempEvo.getID().equals(evo.getChildID())){
-									evo = tempEvo;
-									break;
-								}
-							}
-							
-							if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-									evo.getCgPattern().contains("CONSISTENTCHANGE")) {
-								consist = 1;
-								break;
-							}
-						}
-					}
 					//label一致性需求
 					//判断模式及一致性需求
 					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
