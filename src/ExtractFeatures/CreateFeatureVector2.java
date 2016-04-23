@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -95,33 +96,67 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					group = FindCLoneGroup(evo.getSrcVersion(),evo.getSrcCGID()); //上一版本抽取
 					this.featureVector = new FeatureVector();
 					
-					ExtractForGroup(group);//提取发生变化的克隆组属性
+					ExtractForGroup(group);//提取发生变化的克隆组属性				
+
+					//label一致性需求，判断模式及一致性需求
+					//根据next version和future version共两种标记
+					//label_1：是future version
+					//label_2：是next version
 					
-					//label一致性需求
-					//判断模式及一致性需求
+					//label_1：是future version
+					GenealogyEvolution TempEvo = evo;
+					
 					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-							evo.getCgPattern().contains("CONSISTENTCHANGE")) {consist = 1;}
-					else if(evo.getCgPattern().contains("INCONSISTENTCHANGE")) {
+							evo.getCgPattern().contains("CONSISTENTCHANGE")) {
+						consist = 1;}
+					else  {
 						consist = 0;
+						Stack<String> stack=new Stack<String>();
 						while(evo.getChildID()!=null){
-							for(GenealogyEvolution tempEvo : genEvoList){
-								if(tempEvo.getID().equals(evo.getChildID())){
-									evo = tempEvo;
+							String childID = evo.getChildID();
+							if(!childID.contains("+")){
+								stack.push(evo.getChildID());
+							} else {//考虑分裂模式
+								String [] child_ID = childID.split("\\+");
+								for(String child : child_ID){
+									stack.push(child);
+								}
+							}
+							while(!stack.empty()){
+								for(GenealogyEvolution tempEvo : genEvoList){
+									if(tempEvo.getID().equals(stack.peek())){
+										evo = tempEvo;
+										stack.pop();
+										if(evo.getChildID()!=null) {
+											if(!evo.getChildID().contains("+")){
+												stack.push(evo.getChildID());
+												break;
+											} else {
+												for(String child_id:evo.getChildID().split("\\+")){
+													stack.push(child_id);
+												}
+												break;
+											}
+										}
+										break;
+									}
+								} 
+								
+								if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
+										evo.getCgPattern().contains("CONSISTENTCHANGE")) {
+									consist = 1;
 									break;
 								}
 							}
-							
-							if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-									evo.getCgPattern().contains("CONSISTENTCHANGE")) {
-								consist = 1;
-								break;
-							}
+							if(consist==1) break;
 						}
 					}
 					
+					evo = TempEvo;
+					
 					/*
-					//老的
-					//判断模式及一致性需求
+					//label一致性需求
+					//label_2：是next version
 					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
 							evo.getCgPattern().contains("CONSISTENTCHANGE")) consist = 1;
 					if(evo.getCgPattern().contains("INCONSISTENTCHANGE")) consist = 0;
