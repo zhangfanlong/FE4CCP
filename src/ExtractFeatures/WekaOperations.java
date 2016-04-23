@@ -83,6 +83,15 @@ public class WekaOperations {
         	
         	atts.addElement(new Attribute("cloneAge"));
         	atts.addElement(new Attribute("fragmentCount"));
+        	
+        	atts.addElement(new Attribute("lastSTATIC"));
+        	atts.addElement(new Attribute("lastSAME"));
+        	atts.addElement(new Attribute("lastADD"));
+        	atts.addElement(new Attribute("lastDELETE"));
+        	atts.addElement(new Attribute("lastSPLIT"));
+        	
+        	atts.addElement(new Attribute("lastCONSISTENTCHANGE"));
+        	atts.addElement(new Attribute("lastINCONSISTENTCHANGE"));
         }
         
         //Ò»ÖÂÐÔÎ¬»¤label
@@ -137,6 +146,15 @@ public class WekaOperations {
 				vals[34] = vec.getEvoPattern()[6];	
 				vals[35] = vec.getAge();	
 				vals[36] = vec.getFragCount();
+
+				vals[37] = vec.getlastevoPattern()[0];
+				vals[38] = vec.getlastevoPattern()[1];
+				vals[39] = vec.getlastevoPattern()[2];
+				vals[40] = vec.getlastevoPattern()[3];
+				vals[41] = vec.getlastevoPattern()[4];	
+				vals[42] = vec.getlastevoPattern()[5];
+				vals[43] = vec.getlastevoPattern()[6];	
+	
 			}
 			
 			vals[vals.length-1] = vec.getConsistence();

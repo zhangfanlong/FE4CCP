@@ -42,13 +42,21 @@ public class FeatureVector {
   	//历史变化序列统计
   	private int[] evoPattern;
   	private int age;
+  	private int [] lastevoPattern;
   	
+  	public int[] getlastevoPattern() {
+		return lastevoPattern;
+	}
+	public void setlastevoPattern(int[] evoPattern) {
+		this.lastevoPattern = new int[6];
+		this.lastevoPattern = evoPattern;
+	}
   	
   	public int[] getEvoPattern() {
 		return evoPattern;
 	}
 	public void setEvoPattern(int[] evoPattern) {
-		this.evoPattern = new int[5];
+		this.evoPattern = new int[6];
 		this.evoPattern = evoPattern;
 	}
 	public int getSourceLine() {

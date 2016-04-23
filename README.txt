@@ -20,3 +20,6 @@ b.使用static
 
 6.修改一致性需求维护标签
 （both version of next version and future version）
+
+7.新增上一版本的演化属性.
+

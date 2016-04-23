@@ -24,7 +24,10 @@ import PreProcess.LevenshteinDistance;
 public class CreateFeatureVector2 { //预测加上进化序列
 	public FeatureVector featureVector;
 	private int consist;
-	private int[] pattern;
+	private int[] numberofpatterns;//总的历史属性
+	private int[] lastversionofpattern;
+		
+	
 	private int age;
 	
 	//几个片段总的
@@ -162,7 +165,16 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					if(evo.getCgPattern().contains("INCONSISTENTCHANGE")) consist = 0;
 					*/
 					
-					pattern = new int[7];
+					//提取历史属性
+					//包含lastversionofpattern和numberofpatterns
+					//当前上一版本的演化模式：lastversionofpattern
+					//此版本之前所有历史的演化模式计数：numberofpatterns
+					
+					//提取当前上一版本的演化模式和此版本和之前所有历史的演化模式计数：lastversionofpattern和numberofpatterns
+					lastversionofpattern = new int[7];
+					numberofpatterns = new int[7];				
+				    int flag=1;
+				    
 					while(evo.getParentID()!=null){
 						
 						for(GenealogyEvolution tempEvo : genEvoList){
@@ -172,24 +184,81 @@ public class CreateFeatureVector2 { //预测加上进化序列
 							}
 						}
 						
-						if (evo.getCgPattern().contains("STATIC"))  pattern[0] += 1;
-						if (evo.getCgPattern().contains("SAME"))	pattern[1] += 1;
-						if (evo.getCgPattern().contains("ADD"))	pattern[2] += 1;
-						if (evo.getCgPattern().contains("DELETE")) pattern[3] += 1;
-						if (evo.getCgPattern().contains("SPLIT")) pattern[4] += 1;
+						if (evo.getCgPattern().contains("STATIC")) {
+							numberofpatterns[0] += 1;
+							if(flag==1) lastversionofpattern[0]=numberofpatterns[0];
+						}
+	
+						if (evo.getCgPattern().contains("SAME")) {
+							numberofpatterns[1] += 1;
+							if(flag==1) lastversionofpattern[1]=numberofpatterns[1];
+						}
+					 
+						if (evo.getCgPattern().contains("ADD")) {
+							numberofpatterns[2] += 1;
+							if(flag==1) lastversionofpattern[2]=numberofpatterns[2];
+						}
+						
+						if (evo.getCgPattern().contains("DELETE")) {
+							numberofpatterns[3] += 1;
+							if(flag==1) lastversionofpattern[3]=numberofpatterns[3];
+						}
+						
+						if (evo.getCgPattern().contains("SPLIT")) {
+							numberofpatterns[4] += 1;
+							if(flag==1) lastversionofpattern[4]=numberofpatterns[4];
+						}
+				
+
 						
 						if (!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-								evo.getCgPattern().contains("CONSISTENTCHANGE")) pattern[5] += 1;
-						if (evo.getCgPattern().contains("INCONSISTENTCHANGE")) pattern[6] += 1;
-
-
+								evo.getCgPattern().contains("CONSISTENTCHANGE")) {
+							numberofpatterns[5] += 1;
+							if(flag==1) lastversionofpattern[5]=numberofpatterns[5];
+						}	
+						
+						if (evo.getCgPattern().contains("INCONSISTENTCHANGE")) {
+							numberofpatterns[6] += 1;
+							if(flag==1) lastversionofpattern[6]=numberofpatterns[6];
+						}
+						flag++;		
 						
 						if(evo.getSrcSize() != -1)	++age;//克隆寿命
 					}									
+				
+
 					
+					/*
+					//提此版本之前所有历史的演化模式计数：numberofpatterns
+					numberofpatterns = new int[7];				
+				
+					while(evo.getParentID()!=null){
+						
+						for(GenealogyEvolution tempEvo : genEvoList){
+							if(tempEvo.getID().equals(evo.getParentID())){
+								evo = tempEvo;
+								break;
+							}
+						}
+						
+						if (evo.getCgPattern().contains("STATIC"))  numberofpatterns[0] += 1;
+						if (evo.getCgPattern().contains("SAME"))	numberofpatterns[1] += 1;
+						if (evo.getCgPattern().contains("ADD"))	numberofpatterns[2] += 1;
+						if (evo.getCgPattern().contains("DELETE")) numberofpatterns[3] += 1;
+						if (evo.getCgPattern().contains("SPLIT")) numberofpatterns[4] += 1;
+						
+						if (!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
+								evo.getCgPattern().contains("CONSISTENTCHANGE")) numberofpatterns[5] += 1;
+						if (evo.getCgPattern().contains("INCONSISTENTCHANGE")) numberofpatterns[6] += 1;
+					
+						if(evo.getSrcSize() != -1)	++age;//克隆寿命
+					}									
+					*/
+									
 					this.featureVector.setConsistence(consist);
 					this.featureVector.setAge(age);
-					this.featureVector.setEvoPattern(pattern);
+					this.featureVector.setEvoPattern(numberofpatterns);
+					this.featureVector.setlastevoPattern(lastversionofpattern);
 					VariationInformation.featureVectorList.add(featureVector);
 				}
 			}
