@@ -344,36 +344,41 @@ public class CreateMappingInfo extends Mapping{
 	}
 	
 	//识别克隆群的进化模式 
+	// 新的进化模式识别方法
+	
+	//模式定义为1,2,3
+	//1克隆组内全部克隆代码片段发生相同的变化为一致性变化，最小的定义,定义1目前有问题
+	//2克隆组内至少有两个克隆代码片段发生相同的变化为一致性变化，中间的定义
+	//3克隆组内只要同时发生变化就是一致性变化，最大的定义
 	public void RecognizeEvolutionPattern(){
     	boolean[] atGroupFlag;
         if (this.CGMapList.size() > 0){
-        	atGroupFlag = new boolean[this.CGMapList.size()];
-			for (CloneGroupMapping cgMap : this.CGMapList) {
-				// 新的进化模式识别方法
-				
-				//模式定义为1,2
-				//1克隆组内全部克隆代码片段发生相同的变化为一致性变化，最小的定义
-				//2克隆组内至少有两个克隆代码片段发生相同的变化为一致性变化，中间的定义
-				
-				//模式定义识别根据克隆组大小和映射数量进行对比
-				//根据已经映射上的进行判断一致性变化或者不一致变化
-				
+        	atGroupFlag = new boolean[this.CGMapList.size()];		
+        	for (CloneGroupMapping cgMap : this.CGMapList) {
+
+    			//模式定义识别根据克隆组大小和映射数量进行对比
+    			//根据已经映射上的进行判断一致性变化或者不一致变化
+    	
 				if (cgMap.EvoPattern == null)
 					cgMap.EvoPattern = new EvolutionPattern();
 
 				//数量不变，并且全部映射上
+
 				if (cgMap.srcCGInfo.size == cgMap.destCGInfo.size && cgMap.srcCGInfo.size == cgMap.CFMapList.size()){	
+					
+					cgMap.EvoPattern.setSAME(true);// 识别SAME模式
 					
 					/*
 					 //定义1 克隆组内全部克隆代码片段发生相同的变化为一致性变化，最小的定义			
 					
-					cgMap.EvoPattern.setSAME(true);// 识别SAME模式
+
 					
 					//克隆组内全部克隆代码片段发生相同的变化为一致性变化
+					//有问题
 					boolean equal = true;
 					float textSim = ((CloneFragmentMapping)cgMap.CFMapList.get(0)).textSim;
 					for (int k = 1; k < cgMap.CFMapList.size(); k++) {
-						if (Math.abs(((CloneFragmentMapping) cgMap.CFMapList.get(k)).textSim - textSim) > 0.0000001) {
+						if (Math.abs(((CloneFragmentMapping) cgMap.CFMapList.get(k)).textSim - textSim) > 0.007) {
 							equal = false;
 							break;
 						}
@@ -400,16 +405,22 @@ public class CreateMappingInfo extends Mapping{
 								Static = false;
 							} else if(Math.abs(textSim_m - 1) <= 0.0000001 && Math.abs(textSim_n - 1) <= 0.0000001){
 								if (Static)	Static = true; 
-							} else {if (Static)	Static = false; }
+							} else {
+								if (Static)	Static = false; 
+								}
 						}
 					}
 					if(Static) {
 						cgMap.EvoPattern.setSTATIC(true);
 					} else {
-						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {cgMap.EvoPattern.setINCONSISTENTCHANGE(true);} 
+						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {
+							cgMap.EvoPattern.setINCONSISTENTCHANGE(true);
+						} 
 					}
 					
-					/*int chanFraCount = 0;
+					/*
+					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
+					int chanFraCount = 0;
 					int unChagFraCount = 0;
 					for (int k = 0; k < cgMap.CFMapList.size(); k++) {
 						if (((CloneFragmentMapping) cgMap.CFMapList.get(k)).textSim < 1) {
@@ -462,7 +473,7 @@ public class CreateMappingInfo extends Mapping{
 									cgMap.EvoPattern.setCONSISTENTCHANGE(true);
 								}
 								Static = false;
-							} else if(Math.abs(textSim_m - 1) <= 0.0000001 && Math.abs(textSim_n - 1) <= 0.0000001){
+							} else if(Math.abs(textSim_m - 1) <= 0.007 && Math.abs(textSim_n - 1) <= 0.007){
 								if (Static)	Static = true; 
 							} else {if (Static)	Static = false; }
 						}
@@ -470,10 +481,14 @@ public class CreateMappingInfo extends Mapping{
 					if(Static) {
 						cgMap.EvoPattern.setSTATIC(true);
 					} else {
-						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {cgMap.EvoPattern.setINCONSISTENTCHANGE(true);} 
+						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {
+							cgMap.EvoPattern.setINCONSISTENTCHANGE(true);
+						} 
 					}
 					
-					/*int chanFraCount = 0;
+					/*
+					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
+					int chanFraCount = 0;
 					for (int k = 0; k < cgMap.CFMapList.size(); k++) {
 						if (((CloneFragmentMapping) cgMap.CFMapList.get(k)).textSim < 1) {
 							chanFraCount ++;
@@ -520,7 +535,7 @@ public class CreateMappingInfo extends Mapping{
 									cgMap.EvoPattern.setCONSISTENTCHANGE(true);
 								}
 								Static = false;
-							} else if(Math.abs(textSim_m - 1) <= 0.0000001 && Math.abs(textSim_n - 1) <= 0.0000001){
+							} else if(Math.abs(textSim_m - 1) <= 0.007 && Math.abs(textSim_n - 1) <= 0.007){
 								if (Static)	Static = true; 
 							} else {if (Static)	Static = false; }
 						}
@@ -531,7 +546,9 @@ public class CreateMappingInfo extends Mapping{
 						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {cgMap.EvoPattern.setINCONSISTENTCHANGE(true);} 
 					}
 					
-					/*int chanFraCount = 0;
+					/*
+					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
+					int chanFraCount = 0;
 					for (int k = 0; k < cgMap.CFMapList.size(); k++) {
 						if (((CloneFragmentMapping) cgMap.CFMapList.get(k)).textSim < 1) {
 							chanFraCount ++;
