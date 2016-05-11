@@ -169,7 +169,7 @@ public class MainFrame {
 				testItem.setText("WriteGroup");
 				testItem.addSelectionListener(new SelectionAdapter(){
 					public void widgetSelected(SelectionEvent e) {
-						//TestWriteGroup.printGroupInfo("C:\\Users\\YuanYue\\Desktop\\GroupResult.xml");
+						//TestWriteGroup.printGroupInfo("C:\\Users\\ZFL\\Desktop\\GroupResult.xml");
 						MessageDialog.openInformation(shell, null, "Group finished!");
 					}
 				});
@@ -178,7 +178,7 @@ public class MainFrame {
 				testMapItem.setText("WriteMapping");
 				testMapItem.addSelectionListener(new SelectionAdapter(){
 					public void widgetSelected(SelectionEvent e) {
-						//TestWriteMapping.printMappingInfo("C:\\Users\\YuanYue\\Desktop\\MappingResult.xml");
+						//TestWriteMapping.printMappingInfo("C:\\Users\\ZFL\\Desktop\\MappingResult.xml");
 						MessageDialog.openInformation(shell, null, "Mapping finished!");
 					}
 				});
@@ -187,7 +187,7 @@ public class MainFrame {
 				geneItem.setText("WriteGenealogy");
 				geneItem.addSelectionListener(new SelectionAdapter(){
 					public void widgetSelected(SelectionEvent e) {
-						//TestWriteGenealogy.printGenealogyInfo("C:\\Users\\YuanYue\\Desktop\\GenealogyResult.xml");
+						//TestWriteGenealogy.printGenealogyInfo("C:\\Users\\ZFL\\Desktop\\GenealogyResult.xml");
 						MessageDialog.openInformation(shell, null, "Genealogy finished!");
 					}
 				});

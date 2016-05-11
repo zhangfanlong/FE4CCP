@@ -43,7 +43,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 	private int totalOPERATORCount;
 	private int totalOperandCount;
 	private int[] structuralFeature;
-	
+
 	//上下文属性
 	private boolean isLocal;
 	private float simFileName;
@@ -53,6 +53,48 @@ public class CreateFeatureVector2 { //预测加上进化序列
 	private boolean isSameBlockInfo;
 	private float simMaxParaName;
 	
+	
+	//上一版本
+	public FeatureVector last_featureVector;
+	//上一版本的各种代码属性
+	private int last_souceLines;
+	private int last_fragCount;
+	private int last_totalParaCount;
+	private int last_totalMethodInvocCount;
+	private int last_localMethodInvocCount;
+	private int last_libraryMethodInvocCount;
+	private int last_otherMethodInvocCount;
+	private int last_uniOPERATORCount;
+	private int last_uniOperandCount;
+	private int last_totalOPERATORCount;
+	private int last_totalOperandCount;
+	private int[] last_structuralFeatureP;
+	private int[] last_structuralFeatureN;	
+	//private int[] structuralFeatureChanges_fromOrigin;
+	
+	private void last_init(){
+		last_souceLines=0;
+		last_fragCount=0;
+		last_totalParaCount=0;
+		last_totalMethodInvocCount=0;
+		last_localMethodInvocCount=0;
+		last_libraryMethodInvocCount=0;
+		last_otherMethodInvocCount=0;
+		last_uniOPERATORCount=0;
+		last_uniOperandCount=0;
+		last_totalOPERATORCount=0;
+		last_totalOperandCount=0;
+		
+		last_structuralFeatureP = new int[RelatedNodes.relevantNode.values().length];
+		last_structuralFeatureN = new int[RelatedNodes.relevantNode.values().length];
+		//structuralFeatureChanges_fromOrigin = new int[RelatedNodes.relevantNode.values().length];
+		for(int i=0;i<structuralFeature.length;i++){
+			last_structuralFeatureP[i]=0;
+			last_structuralFeatureN[i]=0;
+			//structuralFeatureChanges_fromOrigin[i] = 0;
+		}
+		
+	}
 	private void init(){
 		consist=0;
 		age = 0;
@@ -69,17 +111,17 @@ public class CreateFeatureVector2 { //预测加上进化序列
 		totalOperandCount = 0;
 		
 		structuralFeature = new int[RelatedNodes.relevantNode.values().length];
-		for(int i=0;i<structuralFeature.length;i++)
+		for(int i=0;i<structuralFeature.length;i++){
 			structuralFeature[i] = 0;
-
+		}
 		
 		isLocal = true;
 		simFileName = 0;
-		simMethodName=0;
-		simTotalParaName=0;
-		simTotalParaType=0;
+		simMethodName = 0;
+		simTotalParaName = 0;
+		simTotalParaType = 0;
 		isSameBlockInfo = true;
-		simMaxParaName=-1;//最大参数名相似度
+		simMaxParaName = -1;// 最大参数名相似度
 	}
 	
 	public void ExtractFeature(){
@@ -98,7 +140,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					//group = FindCLoneGroup(evo.getDestVersion(),evo.getDestCGID()); //当前版本抽取
 					group = FindCLoneGroup(evo.getSrcVersion(),evo.getSrcCGID()); //上一版本抽取
 					this.featureVector = new FeatureVector();
-					
+		
 					ExtractForGroup(group);//提取发生变化的克隆组属性				
 
 					//label一致性需求，判断模式及一致性需求
@@ -106,9 +148,8 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					//label_1：是future version
 					//label_2：是next version
 					
-					//label_1：是future version
+					//label_1：是future version					
 					GenealogyEvolution TempEvo = evo;
-					
 					if(!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
 							evo.getCgPattern().contains("CONSISTENTCHANGE")) {
 						consist = 1;}
@@ -157,6 +198,28 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					
 					evo = TempEvo;
 					
+					//提取j+1版本
+					last_featureVector = new FeatureVector();
+					CloneGroup nextVersionGroup = new CloneGroup();
+					nextVersionGroup = FindCLoneGroup(evo.getDestVersion(),evo.getDestCGID()); //上一版本抽取evo.getSrcVersion()
+					ExtractForLastGroup(nextVersionGroup);
+					//设置j~j+1版本变化信息
+					featureVector.setLast_souceLines(last_featureVector.getSourceLine()-featureVector.getSourceLine());
+					featureVector.setLast_fragCount(last_featureVector.getFragCount()-featureVector.getFragCount());
+					featureVector.setLast_totalParameterCount(last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount());
+					featureVector.setLast_totalMethodInvocCount(last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount());
+					featureVector.setLast_localMethodInvocCount(last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount());
+					featureVector.setLast_libraryMethodInvocCount(last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount());
+					featureVector.setLast_otherMethodInvocCount(last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount());
+					featureVector.setLast_uniOPERATORCount(last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount());
+					featureVector.setLast_uniOperandCount(last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount());
+					featureVector.setLast_totalOPERATORCount(last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount());
+					featureVector.setLast_totalOperandCount(last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount());
+					for(int l=0 ; l<featureVector.getStruFeature().length ; l++){
+						last_structuralFeatureP[l] = last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l];//借用一下last_structuralFeatureP变量   
+					}
+					featureVector.setStructuralFeatureChanges_neighbor(last_structuralFeatureP);
+					
 					/*
 					//label一致性需求
 					//label_2：是next version
@@ -165,7 +228,7 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					if(evo.getCgPattern().contains("INCONSISTENTCHANGE")) consist = 0;
 					*/
 					
-					//提取历史属性
+					//提取演化属性
 					//包含lastversionofpattern和numberofpatterns
 					//当前上一版本的演化模式：lastversionofpattern
 					//此版本之前所有历史的演化模式计数：numberofpatterns
@@ -174,9 +237,11 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					lastversionofpattern = new int[7];
 					numberofpatterns = new int[7];				
 				    int flag=1;
+				    boolean isSetInitChanges=false;
 				    
+				    FeatureVector temp_last_featureVector=null ;
 					while(evo.getParentID()!=null){
-						
+
 						for(GenealogyEvolution tempEvo : genEvoList){
 							if(tempEvo.getID().equals(evo.getParentID())){
 								evo = tempEvo;
@@ -221,44 +286,248 @@ public class CreateFeatureVector2 { //预测加上进化序列
 							numberofpatterns[6] += 1;
 							if(flag==1) lastversionofpattern[6]=numberofpatterns[6];
 						}
-						flag++;		
+						flag++;	//flag用于标示是否是上一版本	
 						
 						if(evo.getSrcSize() != -1)	++age;//克隆寿命
-					}									
-				
-
-					
-					/*
-					//提此版本之前所有历史的演化模式计数：numberofpatterns
-					numberofpatterns = new int[7];				
-				
-					while(evo.getParentID()!=null){
 						
-						for(GenealogyEvolution tempEvo : genEvoList){
-							if(tempEvo.getID().equals(evo.getParentID())){
-								evo = tempEvo;
-								break;
+						/*
+						//提此版本之前所有历史的演化模式计数：numberofpatterns
+						numberofpatterns = new int[7];				
+					
+						while(evo.getParentID()!=null){
+							
+							for(GenealogyEvolution tempEvo : genEvoList){
+								if(tempEvo.getID().equals(evo.getParentID())){
+									evo = tempEvo;
+									break;
+								}
 							}
+							
+							if (evo.getCgPattern().contains("STATIC"))  numberofpatterns[0] += 1;
+							if (evo.getCgPattern().contains("SAME"))	numberofpatterns[1] += 1;
+							if (evo.getCgPattern().contains("ADD"))	numberofpatterns[2] += 1;
+							if (evo.getCgPattern().contains("DELETE")) numberofpatterns[3] += 1;
+							if (evo.getCgPattern().contains("SPLIT")) numberofpatterns[4] += 1;
+							
+							if (!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
+									evo.getCgPattern().contains("CONSISTENTCHANGE")) numberofpatterns[5] += 1;
+							if (evo.getCgPattern().contains("INCONSISTENTCHANGE")) numberofpatterns[6] += 1;
+						
+							if(evo.getSrcSize() != -1)	++age;//克隆寿命
+						}									
+						*/
+						
+						
+						//提取变化历史的度量
+						//变化历史包括两个部分，从0到j的变化历史和j到j+1的变化
+						//变化计算使用代码属性计算，提取i和i+1的代码属性，用i+1的代码属性减去i的代码属性
+						
+						//计算j到j+1的变化，直接使用j+1的代码度量减去j的代码度量即可
+						
+						
+						//计算0到j的变化，依次使用i+1减去i的代码度量，得到差异d1、d2....
+                        //将d拆分出正负分别累计加到正的变化度量和负的变化度量
+						//最终得到两组变化度量，正的和负的
+						
+						
+						//提取上一版本(j-1)的代码度量
+
+						last_featureVector = new FeatureVector();
+						CloneGroup lastVersionGroup = new CloneGroup();
+						if(evo.getSrcVersion() == -1){
+							last_init();
+							if(featureVector.getStructuralFeatureChanges_fromOriginP()==null){
+								featureVector.setStructuralFeatureChanges_fromOriginP(last_structuralFeatureP);
+							}
+							if(featureVector.getStructuralFeatureChanges_fromOriginN()==null){
+								featureVector.setStructuralFeatureChanges_fromOriginN(last_structuralFeatureN);
+							}
+							break;
+						} 
+						
+						lastVersionGroup = FindCLoneGroup(evo.getSrcVersion(),evo.getSrcCGID()); //上一版本抽取evo.getSrcVersion()	
+						ExtractForLastGroup(lastVersionGroup);
+						
+						if(isSetInitChanges){
+							if((temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine())>0){
+								featureVector.setFromOrigin_souceLinesP(featureVector.getFromOrigin_souceLinesP() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
+							}else {
+								featureVector.setFromOrigin_souceLinesN(featureVector.getFromOrigin_souceLinesN() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
+							}
+							
+							if((temp_last_featureVector.getFragCount()-last_featureVector.getFragCount())>0){
+								featureVector.setFromOrigin_fragCountP(featureVector.getFromOrigin_fragCountP() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
+							} else  {
+								featureVector.setFromOrigin_fragCountN(featureVector.getFromOrigin_fragCountN() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
+							}
+							
+							if ((temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount())>0) {
+								featureVector.setFromOrigin_totalParameterCountP(featureVector.getFromOrigin_totalParameterCountP() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+							} else {
+								featureVector.setFromOrigin_totalParameterCountN(featureVector.getFromOrigin_totalParameterCountN() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+							}
+							
+							if ((temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount())>0) {
+								featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getFromOrigin_totalMethodInvocCountP() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getFromOrigin_totalMethodInvocCountN() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+							}
+							
+							if ((temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount())>0) {
+								featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getFromOrigin_localMethodInvocCountP() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getFromOrigin_localMethodInvocCountN() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+							}
+							
+							if ((temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount())>0) {
+								featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getFromOrigin_libraryMethodInvocCountP() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getFromOrigin_libraryMethodInvocCountN() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+							}
+							
+							if ((temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount())>0) {
+								featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getFromOrigin_otherMethodInvocCountP() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getFromOrigin_otherMethodInvocCountN() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+							}
+							
+							if ((temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount())>0) {
+								featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getFromOrigin_uniOPERATORCountP() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+							} else {
+								featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getFromOrigin_uniOPERATORCountN() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+							}
+							
+							if ((temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount())>0) {
+								featureVector.setFromOrigin_uniOperandCountP(featureVector.getFromOrigin_uniOperandCountP() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+							} else {
+								featureVector.setFromOrigin_uniOperandCountN(featureVector.getFromOrigin_uniOperandCountN() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+							}
+							
+							if ((temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount())>0) {
+								featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getFromOrigin_totalOPERATORCountP() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+							} else {
+								featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getFromOrigin_totalOPERATORCountN() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+							}
+							
+							if ((temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount())>0) {
+								featureVector.setFromOrigin_totalOperandCountP(featureVector.getFromOrigin_totalOperandCountP() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+							} else {
+								featureVector.setFromOrigin_totalOperandCountN(featureVector.getFromOrigin_totalOperandCountN() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+							}
+							
+							for(int l=0 ; l<last_featureVector.getStruFeature().length ; l++){
+								if ((temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l])>0) {
+									last_structuralFeatureP[l] = featureVector.getStructuralFeatureChanges_fromOriginP()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]; 
+								} else{
+									last_structuralFeatureN[l] = featureVector.getStructuralFeatureChanges_fromOriginN()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+								} 										
+							}
+							
+							featureVector.setStructuralFeatureChanges_fromOriginP(last_structuralFeatureP);							
+							featureVector.setStructuralFeatureChanges_fromOriginN(last_structuralFeatureN);
+						}
+						if(!isSetInitChanges){//设置最初的上一版本到现在的变化
+							if(featureVector.getSourceLine()-last_featureVector.getSourceLine()>0){
+								featureVector.setFromOrigin_souceLinesP(featureVector.getSourceLine()-last_featureVector.getSourceLine());
+							} else {
+								featureVector.setFromOrigin_souceLinesN(featureVector.getSourceLine()-last_featureVector.getSourceLine());
+							}
+
+							if(featureVector.getFragCount()-last_featureVector.getFragCount()>0){
+								featureVector.setFromOrigin_fragCountP(featureVector.getFragCount()-last_featureVector.getFragCount());
+							} else {
+								featureVector.setFromOrigin_fragCountN(featureVector.getFragCount()-last_featureVector.getFragCount());
+							}
+							
+							if(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount()>0){
+								featureVector.setFromOrigin_totalParameterCountP(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+							} else {
+								featureVector.setFromOrigin_totalParameterCountN(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+							}
+							
+							if(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount()>0){
+								featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+							}
+							
+							if(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount()>0){
+								featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+							}
+
+							if(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount()>0){
+								featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+							}
+							
+							if(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount()>0){
+								featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+							} else {
+								featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+							}
+							
+							if(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount()>0){
+								featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+							} else {
+								featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+							}
+							
+							if(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount()>0){
+								featureVector.setFromOrigin_uniOperandCountP(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+							} else {
+								featureVector.setFromOrigin_uniOperandCountN(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+							}
+							
+							if(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount()>0){
+								featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+							} else {
+								featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+							}
+							
+							if(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount()>0){
+								featureVector.setFromOrigin_totalOperandCountP(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+							} else {
+								featureVector.setFromOrigin_totalOperandCountN(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+							}
+							
+							for(int l=0 ; l<featureVector.getStruFeature().length ; l++){
+								if(featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]>0){
+									last_structuralFeatureP[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+								} else {
+									last_structuralFeatureN[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+								}
+							}
+							featureVector.setStructuralFeatureChanges_fromOriginP(last_structuralFeatureP);
+							featureVector.setStructuralFeatureChanges_fromOriginN(last_structuralFeatureN);
+							
+							isSetInitChanges = true;//设置标志符
 						}
 						
-						if (evo.getCgPattern().contains("STATIC"))  numberofpatterns[0] += 1;
-						if (evo.getCgPattern().contains("SAME"))	numberofpatterns[1] += 1;
-						if (evo.getCgPattern().contains("ADD"))	numberofpatterns[2] += 1;
-						if (evo.getCgPattern().contains("DELETE")) numberofpatterns[3] += 1;
-						if (evo.getCgPattern().contains("SPLIT")) numberofpatterns[4] += 1;
-						
-						if (!evo.getCgPattern().contains("INCONSISTENTCHANGE") && 
-								evo.getCgPattern().contains("CONSISTENTCHANGE")) numberofpatterns[5] += 1;
-						if (evo.getCgPattern().contains("INCONSISTENTCHANGE")) numberofpatterns[6] += 1;
+						temp_last_featureVector = new FeatureVector();
+						temp_last_featureVector = last_featureVector;
+					}
 					
-						if(evo.getSrcSize() != -1)	++age;//克隆寿命
-					}									
-					*/
-									
+					last_init();
+					if(featureVector.getStructuralFeatureChanges_fromOriginP()==null){
+						featureVector.setStructuralFeatureChanges_fromOriginP(last_structuralFeatureP);
+					}
+					if(featureVector.getStructuralFeatureChanges_fromOriginN()==null){
+						featureVector.setStructuralFeatureChanges_fromOriginN(last_structuralFeatureN);
+					}
+					
+
+								
+					//在这加上新特征属性
+					
+					
 					this.featureVector.setConsistence(consist);
 					this.featureVector.setAge(age);
 					this.featureVector.setEvoPattern(numberofpatterns);
 					this.featureVector.setlastevoPattern(lastversionofpattern);
+					
 					VariationInformation.featureVectorList.add(featureVector);
 				}
 			}
@@ -267,6 +536,73 @@ public class CreateFeatureVector2 { //预测加上进化序列
 		WekaOperations.WriteFeaturesToArff(Path._clonesFolderPath + "FeatureVector_2.arff",2);
 		
 	}//ExtractFeature()
+	
+	private void ExtractForLastGroup(CloneGroup group){
+		last_init();
+		int length = group.getClonefragment().size();
+		this.last_featureVector.setFragCount(length);
+		for(int i=0;i<length;i++){
+			//代码和结构特征
+			CloneFragment frag = group.getClonefragment().get(i);
+			last_souceLines += (frag.getEndLine() - frag.getStartLine()+1);
+			
+			String subSysPath = Path._subSysDirectory + "\\" + frag.getPath();
+			List<String> sourceCode=CreateCRDInfo.GetFileContent(subSysPath);
+			List<String> cloneCode = new ArrayList<String>();
+			cloneCode = CreateCRDInfo.GetCFSourceFromCRDInfo(sourceCode, frag.getStartLine(), frag.getEndLine());
+			 
+			//函数调用次数及总数，从AST提取
+			String sysClassFilesPath = Path._subClassFilesDirectory + "\\" + frag.getPath().split("/")[0];
+	  		CompilationUnit cu = this.CreateAST(subSysPath,sysClassFilesPath);	
+	  		//获得克隆代码所在类名,及位置信息
+	  		String className = frag.getCRD().getClassName();
+	  		int startPos = cu.getPosition(frag.getStartLine(), 0);
+	  		int endPos = cu.getPosition(frag.getEndLine() + 1,0 ); //endLine + 1 or startPos + 1
+	  		
+	  		MethodInvocCountVisitor invocFeatureVisitor = new MethodInvocCountVisitor(startPos,endPos,className,VariationInformation.allVersionJavaFiles.get(frag.getPath().substring(0, frag.getPath().indexOf("/"))));
+	  		cu.accept(invocFeatureVisitor);
+		
+	  		last_totalParaCount += invocFeatureVisitor.getTotalParameterCount();
+	  		last_totalMethodInvocCount += invocFeatureVisitor.getTotalMethodInvocCount();
+	  		last_localMethodInvocCount += invocFeatureVisitor.getLocalMethodInvocCount();
+	  		last_libraryMethodInvocCount += invocFeatureVisitor.getLibraryMethodInvocCount();
+	  		last_otherMethodInvocCount += invocFeatureVisitor.getOtherMethodInvocCount();
+	  		
+	  		//halstead度量  
+	        cloneCode = PreProcess.clearComment(cloneCode);
+	        cloneCode = PreProcess.clearString(cloneCode);
+	        cloneCode = PreProcess.clearImport(cloneCode);
+	        HalsteadMetric halMetric = new HalsteadMetric(cloneCode);
+	        
+	        last_uniOPERATORCount += halMetric.getUniOPERATORCount();
+	        last_uniOperandCount += halMetric.getUniOperandCount();
+	        last_totalOPERATORCount += halMetric.getTotalOPERATORCount(); 
+	        last_totalOperandCount += halMetric.getTotalOperandCount();
+	        
+	        //结构特征
+	        StructuralFeatureVisitor strucFeatureVisitor = new StructuralFeatureVisitor(startPos,endPos);
+	        cu.accept(strucFeatureVisitor);
+	        for(int l=0 ; l<strucFeatureVisitor.getStructuralFeature().length ; l++)
+	        	last_structuralFeatureP[l] += strucFeatureVisitor.getStructuralFeature()[l];  //借用一下last_structuralFeatureP变量，无实际意义
+		}
+		
+		this.last_featureVector.setSourceLine(last_souceLines/length);
+		this.last_featureVector.setTotalParameterCount(last_totalParaCount/length);
+  		this.last_featureVector.setTotalMethodInvocCount(last_totalMethodInvocCount/length);
+  		this.last_featureVector.setLocalMethodInvocCount(last_localMethodInvocCount/length);
+  		this.last_featureVector.setLibraryMethodInvocCount(last_libraryMethodInvocCount/length);
+  		this.last_featureVector.setOtherMethodInvocCount(last_otherMethodInvocCount/length);
+
+        this.last_featureVector.setUniOPERATORCount(last_uniOPERATORCount/length);
+        this.last_featureVector.setUniOperandCount(last_uniOperandCount/length);
+        this.last_featureVector.setTotalOPERATORCount(last_totalOPERATORCount/length);
+        this.last_featureVector.setTotalOperandCount(last_totalOperandCount/length);  
+        for(int k=0;k<this.last_structuralFeatureP.length;k++){
+        	last_structuralFeatureP[k] = last_structuralFeatureP[k]/length;
+        }
+        this.last_featureVector.setStruFeature(last_structuralFeatureP);
+	}
+	
 	
 	private void ExtractForGroup(CloneGroup group){	
 		init();

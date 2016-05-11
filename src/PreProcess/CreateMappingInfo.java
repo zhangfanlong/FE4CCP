@@ -364,7 +364,7 @@ public class CreateMappingInfo extends Mapping{
 
 				//数量不变，并且全部映射上
 
-				if (cgMap.srcCGInfo.size == cgMap.destCGInfo.size && cgMap.srcCGInfo.size == cgMap.CFMapList.size()){	
+				if ((cgMap.srcCGInfo.size == cgMap.destCGInfo.size) && (cgMap.srcCGInfo.size == cgMap.CFMapList.size())){	
 					
 					cgMap.EvoPattern.setSAME(true);// 识别SAME模式
 					
@@ -374,7 +374,7 @@ public class CreateMappingInfo extends Mapping{
 
 					
 					//克隆组内全部克隆代码片段发生相同的变化为一致性变化
-					//有问题
+					//有问题，数量变化
 					boolean equal = true;
 					float textSim = ((CloneFragmentMapping)cgMap.CFMapList.get(0)).textSim;
 					for (int k = 1; k < cgMap.CFMapList.size(); k++) {
@@ -440,8 +440,8 @@ public class CreateMappingInfo extends Mapping{
 				}
 				
 				//映射上的小于目的克隆组
-				if (cgMap.CFMapList.size() < cgMap.destCGInfo.size){
-					
+				if ((cgMap.CFMapList.size() < cgMap.destCGInfo.size)){
+									
 					cgMap.EvoPattern.setADD(true);// 识别ADD模式
 					
 					/*
@@ -502,7 +502,7 @@ public class CreateMappingInfo extends Mapping{
 				}
 	            
 				//映射上小于源克隆组
-				if (cgMap.CFMapList.size() < cgMap.srcCGInfo.size) {
+				if ((cgMap.CFMapList.size() < cgMap.srcCGInfo.size)) {
 					
 					cgMap.EvoPattern.setSUBSTRACT(true);// 识别SUBSTRACT模式
 					
