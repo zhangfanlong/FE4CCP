@@ -187,7 +187,7 @@ public class MainFrame {
 				geneItem.setText("WriteGenealogy");
 				geneItem.addSelectionListener(new SelectionAdapter(){
 					public void widgetSelected(SelectionEvent e) {
-						//TestWriteGenealogy.printGenealogyInfo("C:\\Users\\ZFL\\Desktop\\GenealogyResult.xml");
+						TestWriteGenealogy.printGenealogyInfo("C:\\Users\\ZFL\\Desktop\\GenealogyResult.xml");
 						MessageDialog.openInformation(shell, null, "Genealogy finished!");
 					}
 				});

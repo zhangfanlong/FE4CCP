@@ -204,6 +204,8 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					nextVersionGroup = FindCLoneGroup(evo.getDestVersion(),evo.getDestCGID()); //上一版本抽取evo.getSrcVersion()
 					ExtractForLastGroup(nextVersionGroup);
 					//设置j~j+1版本变化信息
+					/*
+					 * 计算变化
 					featureVector.setLast_souceLines(last_featureVector.getSourceLine()-featureVector.getSourceLine());
 					featureVector.setLast_fragCount(last_featureVector.getFragCount()-featureVector.getFragCount());
 					featureVector.setLast_totalParameterCount(last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount());
@@ -218,6 +220,145 @@ public class CreateFeatureVector2 { //预测加上进化序列
 					for(int l=0 ; l<featureVector.getStruFeature().length ; l++){
 						last_structuralFeatureP[l] = last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l];//借用一下last_structuralFeatureP变量   
 					}
+					*/
+					//变化计数
+					if((last_featureVector.getSourceLine()-featureVector.getSourceLine())>0){
+						//featureVector.setLast_souceLines(last_featureVector.getSourceLine()-featureVector.getSourceLine());
+						featureVector.setLast_souceLines(1);
+					}
+					else if((last_featureVector.getSourceLine()-featureVector.getSourceLine())<0){
+						//featureVector.setLast_souceLines(last_featureVector.getSourceLine()-featureVector.getSourceLine());
+						featureVector.setLast_souceLines(-1);
+					}else {
+						//featureVector.setLast_souceLines(last_featureVector.getSourceLine()-featureVector.getSourceLine());
+						featureVector.setLast_souceLines(0);
+					}
+					
+					if ((last_featureVector.getFragCount()-featureVector.getFragCount())>0) {
+						//featureVector.setLast_fragCount(last_featureVector.getFragCount()-featureVector.getFragCount());
+						featureVector.setLast_fragCount(1);
+					} else if((last_featureVector.getFragCount()-featureVector.getFragCount())< 0) {
+						//featureVector.setLast_fragCount(last_featureVector.getFragCount()-featureVector.getFragCount());
+						featureVector.setLast_fragCount(-1);
+					} else {
+						//featureVector.setLast_fragCount(last_featureVector.getFragCount()-featureVector.getFragCount());
+						featureVector.setLast_fragCount(0);
+					}
+
+					if ((last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount())> 0) {
+						//featureVector.setLast_totalParameterCount(last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount());
+						featureVector.setLast_totalParameterCount(1);
+					} else if ((last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount())< 0){
+						//featureVector.setLast_totalParameterCount(last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount());
+						featureVector.setLast_totalParameterCount(-1);
+					} else {
+						//featureVector.setLast_totalParameterCount(last_featureVector.getTotalParameterCount()-featureVector.getTotalParameterCount());
+						featureVector.setLast_totalParameterCount(0);
+					}
+					
+					if ((last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount())> 0) {
+						//featureVector.setLast_totalMethodInvocCount(last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount());
+						featureVector.setLast_totalMethodInvocCount(1);
+					} else if((last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount())< 0)  {
+						//featureVector.setLast_totalMethodInvocCount(last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount());
+						featureVector.setLast_totalMethodInvocCount(-1);
+					} else {
+						//featureVector.setLast_totalMethodInvocCount(last_featureVector.getTotalMethodInvocCount()-featureVector.getTotalMethodInvocCount());
+						featureVector.setLast_totalMethodInvocCount(0);
+					}
+					
+					if ((last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount())> 0) {
+						//featureVector.setLast_localMethodInvocCount(last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount());
+						featureVector.setLast_localMethodInvocCount(1);
+					} else if ((last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount())< 0){
+						//featureVector.setLast_localMethodInvocCount(last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount());
+						featureVector.setLast_localMethodInvocCount(-1);
+					}else {
+						//featureVector.setLast_localMethodInvocCount(last_featureVector.getLocalMethodInvocCount()-featureVector.getLocalMethodInvocCount());
+						featureVector.setLast_localMethodInvocCount(0);
+					}
+					
+					if ((last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount())> 0) {
+						//featureVector.setLast_libraryMethodInvocCount(last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount());
+						featureVector.setLast_libraryMethodInvocCount(1);
+					} else if ((last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount())< 0){
+						//featureVector.setLast_libraryMethodInvocCount(last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount());
+						featureVector.setLast_libraryMethodInvocCount(-1);
+					} else {
+						//featureVector.setLast_libraryMethodInvocCount(last_featureVector.getLibraryMethodInvocCount()-featureVector.getLibraryMethodInvocCount());
+						featureVector.setLast_libraryMethodInvocCount(0);
+					}
+					
+					if ((last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount())> 0) {
+						//featureVector.setLast_otherMethodInvocCount(last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount());
+						featureVector.setLast_otherMethodInvocCount(1);
+					} else if ((last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount())< 0){
+						//featureVector.setLast_otherMethodInvocCount(last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount());
+						featureVector.setLast_otherMethodInvocCount(-1);
+					} else {
+						//featureVector.setLast_otherMethodInvocCount(last_featureVector.getOtherMethodInvocCount()-featureVector.getOtherMethodInvocCount());
+						featureVector.setLast_otherMethodInvocCount(0);
+					}
+					
+					if ((last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount())> 0) {
+						//featureVector.setLast_uniOPERATORCount(last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount());
+						featureVector.setLast_uniOPERATORCount(1);
+					} else if ((last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount())< 0){
+						//featureVector.setLast_uniOPERATORCount(last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount());
+						featureVector.setLast_uniOPERATORCount(-1);
+					} else {
+						//featureVector.setLast_uniOPERATORCount(last_featureVector.getUniOPERATORCount()-featureVector.getUniOPERATORCount());
+						featureVector.setLast_uniOPERATORCount(0);
+					}
+					
+					if((last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount())>0){
+						//featureVector.setLast_uniOperandCount(last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount());
+						featureVector.setLast_uniOperandCount(1);
+					} else if ((last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount())<0) {
+						//featureVector.setLast_uniOperandCount(last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount());
+						featureVector.setLast_uniOperandCount(-1);
+					} else {
+						//featureVector.setLast_uniOperandCount(last_featureVector.getUniOperandCount()-featureVector.getUniOperandCount());
+						featureVector.setLast_uniOperandCount(0);
+					}
+
+					if ((last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount())>0) {
+						//featureVector.setLast_totalOPERATORCount(last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount());
+						featureVector.setLast_totalOPERATORCount(1);
+					} else if((last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount())<0) {
+						//featureVector.setLast_totalOPERATORCount(last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount());
+						featureVector.setLast_totalOPERATORCount(-1);
+					} else {
+						//featureVector.setLast_totalOPERATORCount(last_featureVector.getTotalOPERATORCount()-featureVector.getTotalOPERATORCount());
+						featureVector.setLast_totalOPERATORCount(0);
+					}
+					
+					if((last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount())>0){
+						//featureVector.setLast_totalOperandCount(last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount());
+						featureVector.setLast_totalOperandCount(1);
+					} else if ((last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount())<0) {
+						//featureVector.setLast_totalOperandCount(last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount());
+						featureVector.setLast_totalOperandCount(-1);
+					} else {
+						//featureVector.setLast_totalOperandCount(last_featureVector.getTotalOperandCount()-featureVector.getTotalOperandCount());
+						featureVector.setLast_totalOperandCount(0);
+					}
+					
+					
+					for(int l=0 ; l<featureVector.getStruFeature().length ; l++){
+						if((last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l])>0){
+							//last_structuralFeatureP[l] = last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l];//借用一下last_structuralFeatureP变量   	
+							last_structuralFeatureP[l]=1;
+						} else if((last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l])<0){
+							//last_structuralFeatureP[l] = last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l];//借用一下last_structuralFeatureP变量   	
+							last_structuralFeatureP[l]=-1;
+						} else {
+							//last_structuralFeatureP[l] = last_featureVector.getStruFeature()[l]-featureVector.getStruFeature()[l];//借用一下last_structuralFeatureP变量   	
+							last_structuralFeatureP[l]=0;
+						}				
+
+					}
+					
 					featureVector.setStructuralFeatureChanges_neighbor(last_structuralFeatureP);
 					
 					/*
@@ -322,12 +463,12 @@ public class CreateFeatureVector2 { //预测加上进化序列
 						//变化历史包括两个部分，从0到j的变化历史和j到j+1的变化
 						//变化计算使用代码属性计算，提取i和i+1的代码属性，用i+1的代码属性减去i的代码属性
 						
-						//计算j到j+1的变化，直接使用j+1的代码度量减去j的代码度量即可
+						//计算j到j+1的变化，直接使用j+1的代码度量减去j的代码度量，根据正负计数
 						
 						
 						//计算0到j的变化，依次使用i+1减去i的代码度量，得到差异d1、d2....
-                        //将d拆分出正负分别累计加到正的变化度量和负的变化度量
-						//最终得到两组变化度量，正的和负的
+                        //将d拆分出正负分别累计计数加到正的变化度量和负的变化度量
+						//最终得到两组变化度量，正的和负的,分别计数
 						
 						
 						//提取上一版本(j-1)的代码度量
@@ -350,76 +491,100 @@ public class CreateFeatureVector2 { //预测加上进化序列
 						
 						if(isSetInitChanges){
 							if((temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine())>0){
-								featureVector.setFromOrigin_souceLinesP(featureVector.getFromOrigin_souceLinesP() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
-							}else {
-								featureVector.setFromOrigin_souceLinesN(featureVector.getFromOrigin_souceLinesN() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
+								//featureVector.setFromOrigin_souceLinesP(featureVector.getFromOrigin_souceLinesP() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
+								featureVector.setFromOrigin_souceLinesP(featureVector.getFromOrigin_souceLinesP() + 1);
+							}else if((temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine())<0){
+								//featureVector.setFromOrigin_souceLinesN(featureVector.getFromOrigin_souceLinesN() + temp_last_featureVector.getSourceLine() - last_featureVector.getSourceLine());
+								featureVector.setFromOrigin_souceLinesN(featureVector.getFromOrigin_souceLinesN() + 1);
 							}
 							
 							if((temp_last_featureVector.getFragCount()-last_featureVector.getFragCount())>0){
-								featureVector.setFromOrigin_fragCountP(featureVector.getFromOrigin_fragCountP() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
-							} else  {
-								featureVector.setFromOrigin_fragCountN(featureVector.getFromOrigin_fragCountN() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
+								//featureVector.setFromOrigin_fragCountP(featureVector.getFromOrigin_fragCountP() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
+								featureVector.setFromOrigin_fragCountP(featureVector.getFromOrigin_fragCountP() + 1);
+							} else  if((temp_last_featureVector.getFragCount()-last_featureVector.getFragCount())<0){
+								//featureVector.setFromOrigin_fragCountN(featureVector.getFromOrigin_fragCountN() + temp_last_featureVector.getFragCount()-last_featureVector.getFragCount());
+								featureVector.setFromOrigin_fragCountN(featureVector.getFromOrigin_fragCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount())>0) {
-								featureVector.setFromOrigin_totalParameterCountP(featureVector.getFromOrigin_totalParameterCountP() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
-							} else {
-								featureVector.setFromOrigin_totalParameterCountN(featureVector.getFromOrigin_totalParameterCountN() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								//featureVector.setFromOrigin_totalParameterCountP(featureVector.getFromOrigin_totalParameterCountP() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								featureVector.setFromOrigin_totalParameterCountP(featureVector.getFromOrigin_totalParameterCountP()+ 1);
+							} else if ((temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount())<0){
+								//featureVector.setFromOrigin_totalParameterCountN(featureVector.getFromOrigin_totalParameterCountN() + temp_last_featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								featureVector.setFromOrigin_totalParameterCountN(featureVector.getFromOrigin_totalParameterCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount())>0) {
-								featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getFromOrigin_totalMethodInvocCountP() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getFromOrigin_totalMethodInvocCountN() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								//featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getFromOrigin_totalMethodInvocCountP() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getFromOrigin_totalMethodInvocCountP() + 1);
+							} else if ((temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount())<0){
+								//featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getFromOrigin_totalMethodInvocCountN() + temp_last_featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getFromOrigin_totalMethodInvocCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount())>0) {
-								featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getFromOrigin_localMethodInvocCountP() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getFromOrigin_localMethodInvocCountN() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								//featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getFromOrigin_localMethodInvocCountP() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getFromOrigin_localMethodInvocCountP() + 1);
+							} else if ((temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount())<0){
+								//featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getFromOrigin_localMethodInvocCountN() + temp_last_featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getFromOrigin_localMethodInvocCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount())>0) {
-								featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getFromOrigin_libraryMethodInvocCountP() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getFromOrigin_libraryMethodInvocCountN() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								//featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getFromOrigin_libraryMethodInvocCountP() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getFromOrigin_libraryMethodInvocCountP() + 1);
+							} else if ((temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount())<0){
+								//featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getFromOrigin_libraryMethodInvocCountN() + temp_last_featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getFromOrigin_libraryMethodInvocCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount())>0) {
-								featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getFromOrigin_otherMethodInvocCountP() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getFromOrigin_otherMethodInvocCountN() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								//featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getFromOrigin_otherMethodInvocCountP() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getFromOrigin_otherMethodInvocCountP() + 1);
+							} else if ((temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount())<0){
+								//featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getFromOrigin_otherMethodInvocCountN() + temp_last_featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getFromOrigin_otherMethodInvocCountN() +1);
 							}
 							
 							if ((temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount())>0) {
-								featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getFromOrigin_uniOPERATORCountP() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
-							} else {
-								featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getFromOrigin_uniOPERATORCountN() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								//featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getFromOrigin_uniOPERATORCountP() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getFromOrigin_uniOPERATORCountP() + 1);
+							} else if ((temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount())< 0){
+								//featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getFromOrigin_uniOPERATORCountN() + temp_last_featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getFromOrigin_uniOPERATORCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount())>0) {
-								featureVector.setFromOrigin_uniOperandCountP(featureVector.getFromOrigin_uniOperandCountP() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
-							} else {
-								featureVector.setFromOrigin_uniOperandCountN(featureVector.getFromOrigin_uniOperandCountN() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								//featureVector.setFromOrigin_uniOperandCountP(featureVector.getFromOrigin_uniOperandCountP() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								featureVector.setFromOrigin_uniOperandCountP(featureVector.getFromOrigin_uniOperandCountP() + 1);
+							} else if ((temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount())<0) {
+								//featureVector.setFromOrigin_uniOperandCountN(featureVector.getFromOrigin_uniOperandCountN() + temp_last_featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								featureVector.setFromOrigin_uniOperandCountN(featureVector.getFromOrigin_uniOperandCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount())>0) {
-								featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getFromOrigin_totalOPERATORCountP() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
-							} else {
-								featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getFromOrigin_totalOPERATORCountN() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								//featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getFromOrigin_totalOPERATORCountP() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getFromOrigin_totalOPERATORCountP() + 1);
+							} else if ((temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount())<0){
+								//featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getFromOrigin_totalOPERATORCountN() + temp_last_featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getFromOrigin_totalOPERATORCountN() + 1);
 							}
 							
 							if ((temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount())>0) {
-								featureVector.setFromOrigin_totalOperandCountP(featureVector.getFromOrigin_totalOperandCountP() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
-							} else {
-								featureVector.setFromOrigin_totalOperandCountN(featureVector.getFromOrigin_totalOperandCountN() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								//featureVector.setFromOrigin_totalOperandCountP(featureVector.getFromOrigin_totalOperandCountP() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								featureVector.setFromOrigin_totalOperandCountP(featureVector.getFromOrigin_totalOperandCountP() + 1);
+							} else if ((temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount())<0){
+								//featureVector.setFromOrigin_totalOperandCountN(featureVector.getFromOrigin_totalOperandCountN() + temp_last_featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								featureVector.setFromOrigin_totalOperandCountN(featureVector.getFromOrigin_totalOperandCountN() + 1);
 							}
 							
 							for(int l=0 ; l<last_featureVector.getStruFeature().length ; l++){
 								if ((temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l])>0) {
-									last_structuralFeatureP[l] = featureVector.getStructuralFeatureChanges_fromOriginP()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]; 
-								} else{
-									last_structuralFeatureN[l] = featureVector.getStructuralFeatureChanges_fromOriginN()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+									//last_structuralFeatureP[l] = featureVector.getStructuralFeatureChanges_fromOriginP()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]; 
+									last_structuralFeatureP[l] = featureVector.getStructuralFeatureChanges_fromOriginP()[l] + 1;
+								} else if ((temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l])<0){
+									//last_structuralFeatureN[l] = featureVector.getStructuralFeatureChanges_fromOriginN()[l] + temp_last_featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+									last_structuralFeatureN[l] = featureVector.getStructuralFeatureChanges_fromOriginN()[l] + 1;
 								} 										
 							}
 							
@@ -428,76 +593,100 @@ public class CreateFeatureVector2 { //预测加上进化序列
 						}
 						if(!isSetInitChanges){//设置最初的上一版本到现在的变化
 							if(featureVector.getSourceLine()-last_featureVector.getSourceLine()>0){
-								featureVector.setFromOrigin_souceLinesP(featureVector.getSourceLine()-last_featureVector.getSourceLine());
-							} else {
-								featureVector.setFromOrigin_souceLinesN(featureVector.getSourceLine()-last_featureVector.getSourceLine());
+								//featureVector.setFromOrigin_souceLinesP(featureVector.getSourceLine()-last_featureVector.getSourceLine());
+								featureVector.setFromOrigin_souceLinesP(1);
+							} else if(featureVector.getSourceLine()-last_featureVector.getSourceLine()<0){
+								//featureVector.setFromOrigin_souceLinesN(featureVector.getSourceLine()-last_featureVector.getSourceLine());
+								featureVector.setFromOrigin_souceLinesN(1);
 							}
 
 							if(featureVector.getFragCount()-last_featureVector.getFragCount()>0){
-								featureVector.setFromOrigin_fragCountP(featureVector.getFragCount()-last_featureVector.getFragCount());
-							} else {
-								featureVector.setFromOrigin_fragCountN(featureVector.getFragCount()-last_featureVector.getFragCount());
+								//featureVector.setFromOrigin_fragCountP(featureVector.getFragCount()-last_featureVector.getFragCount());
+								featureVector.setFromOrigin_fragCountP(1);
+							} else if(featureVector.getFragCount()-last_featureVector.getFragCount()<0){
+								//featureVector.setFromOrigin_fragCountN(featureVector.getFragCount()-last_featureVector.getFragCount());
+								featureVector.setFromOrigin_fragCountN(1);
 							}
 							
 							if(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount()>0){
-								featureVector.setFromOrigin_totalParameterCountP(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
-							} else {
-								featureVector.setFromOrigin_totalParameterCountN(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								//featureVector.setFromOrigin_totalParameterCountP(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								featureVector.setFromOrigin_totalParameterCountP(1);
+							} else if(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount()<0){
+								//featureVector.setFromOrigin_totalParameterCountN(featureVector.getTotalParameterCount()-last_featureVector.getTotalParameterCount());
+								featureVector.setFromOrigin_totalParameterCountN(1);
 							}
 							
 							if(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount()>0){
-								featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								//featureVector.setFromOrigin_totalMethodInvocCountP(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								featureVector.setFromOrigin_totalMethodInvocCountP(1);
+							} else if(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount()<0){
+								//featureVector.setFromOrigin_totalMethodInvocCountN(featureVector.getTotalMethodInvocCount()-last_featureVector.getTotalMethodInvocCount());
+								featureVector.setFromOrigin_totalMethodInvocCountN(1);
 							}
 							
 							if(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount()>0){
-								featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								//featureVector.setFromOrigin_localMethodInvocCountP(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								featureVector.setFromOrigin_localMethodInvocCountP(1);
+							} else if(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount()<0){
+								//featureVector.setFromOrigin_localMethodInvocCountN(featureVector.getLocalMethodInvocCount()-last_featureVector.getLocalMethodInvocCount());
+								featureVector.setFromOrigin_localMethodInvocCountN(1);
 							}
 
 							if(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount()>0){
-								featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								//featureVector.setFromOrigin_libraryMethodInvocCountP(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								featureVector.setFromOrigin_libraryMethodInvocCountP(1);
+							} else if(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount()<0){
+								//featureVector.setFromOrigin_libraryMethodInvocCountN(featureVector.getLibraryMethodInvocCount()-last_featureVector.getLibraryMethodInvocCount());
+								featureVector.setFromOrigin_libraryMethodInvocCountN(1);
 							}
 							
 							if(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount()>0){
-								featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
-							} else {
-								featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								//featureVector.setFromOrigin_otherMethodInvocCountP(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								featureVector.setFromOrigin_otherMethodInvocCountP(1);
+							} else if(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount()<0){
+								//featureVector.setFromOrigin_otherMethodInvocCountN(featureVector.getOtherMethodInvocCount() - last_featureVector.getOtherMethodInvocCount());
+								featureVector.setFromOrigin_otherMethodInvocCountN(1);
 							}
 							
 							if(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount()>0){
-								featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
-							} else {
-								featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								//featureVector.setFromOrigin_uniOPERATORCountP(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								featureVector.setFromOrigin_uniOPERATORCountP(1);
+							} else 	if(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount()<0){
+								//featureVector.setFromOrigin_uniOPERATORCountN(featureVector.getUniOPERATORCount()-last_featureVector.getUniOPERATORCount());
+								featureVector.setFromOrigin_uniOPERATORCountN(1);
 							}
 							
 							if(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount()>0){
-								featureVector.setFromOrigin_uniOperandCountP(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
-							} else {
-								featureVector.setFromOrigin_uniOperandCountN(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								//featureVector.setFromOrigin_uniOperandCountP(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								featureVector.setFromOrigin_uniOperandCountP(1);
+							} else if(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount()<0){
+								//featureVector.setFromOrigin_uniOperandCountN(featureVector.getUniOperandCount()-last_featureVector.getUniOperandCount());
+								featureVector.setFromOrigin_uniOperandCountN(1);
 							}
 							
 							if(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount()>0){
-								featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
-							} else {
-								featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								//featureVector.setFromOrigin_totalOPERATORCountP(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								featureVector.setFromOrigin_totalOPERATORCountP(1);
+							} else if(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount()<0){
+								//featureVector.setFromOrigin_totalOPERATORCountN(featureVector.getTotalOPERATORCount()-last_featureVector.getTotalOPERATORCount());
+								featureVector.setFromOrigin_totalOPERATORCountN(1);
 							}
 							
 							if(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount()>0){
-								featureVector.setFromOrigin_totalOperandCountP(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
-							} else {
-								featureVector.setFromOrigin_totalOperandCountN(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								//featureVector.setFromOrigin_totalOperandCountP(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								featureVector.setFromOrigin_totalOperandCountP(1);
+							} else if(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount()<0){
+								//featureVector.setFromOrigin_totalOperandCountN(featureVector.getTotalOperandCount()-last_featureVector.getTotalOperandCount());
+								featureVector.setFromOrigin_totalOperandCountN(1);
 							}
 							
 							for(int l=0 ; l<featureVector.getStruFeature().length ; l++){
 								if(featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]>0){
-									last_structuralFeatureP[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
-								} else {
-									last_structuralFeatureN[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+									//last_structuralFeatureP[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+									last_structuralFeatureP[l] = 1;
+								} else if(featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l]<0){
+									//last_structuralFeatureN[l] = featureVector.getStruFeature()[l] - last_featureVector.getStruFeature()[l];
+									last_structuralFeatureN[l]=1;
 								}
 							}
 							featureVector.setStructuralFeatureChanges_fromOriginP(last_structuralFeatureP);
