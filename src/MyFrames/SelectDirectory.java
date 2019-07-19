@@ -172,7 +172,9 @@ public class SelectDirectory extends Dialog {
 					for(int i=0;i<subCloneFolder.length;i++){
 						if(subCloneFolder[i].isDirectory()){
 							String[] cloneFiles = subCloneFolder[i].list();
-							if(cloneFiles.length !=0 && cloneFiles[0].endsWith("-classes.xml")){
+							//if(cloneFiles.length !=0 && cloneFiles[0].endsWith("-classes.xml")){	
+							if(cloneFiles.length !=0 && cloneFiles[0].endsWith(".xml")){
+
 								cloneIndex = i;
 								break;
 							}	

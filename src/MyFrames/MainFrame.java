@@ -83,13 +83,15 @@ public class MainFrame {
 						CreateGenealogyInfo genealogyInfo = new CreateGenealogyInfo();
 						genealogyInfo.CreateGenealogyForAll();
 						
-						CreateFeatureVector2 createFeature = new CreateFeatureVector2();
+						//提取发生变化的克隆特征（同时标记）
+						/*CreateFeatureVector2 createFeature = new CreateFeatureVector2();
 						createFeature.ExtractFeature();
-						MessageDialog.openInformation(shell, null, " ARFF_2 Created!");
+						MessageDialog.openInformation(shell, null, " ARFF_2 Created!");*/
 						
-						/*CreateTrainedFeatureVector createFeature = new CreateTrainedFeatureVector();
+						//提取复制粘贴操作的特征（同时标记）
+						CreateTrainedFeatureVector createFeature = new CreateTrainedFeatureVector();
 						createFeature.ExtractFeature();
-						MessageDialog.openInformation(shell, null, "PreProcess Finishen! ARFF Created!");*/
+						MessageDialog.openInformation(shell, null, "PreProcess Finishen! ARFF Created!");
 					}
 				});
 				

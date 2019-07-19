@@ -370,9 +370,6 @@ public class CreateMappingInfo extends Mapping{
 					
 					/*
 					 //定义1 克隆组内全部克隆代码片段发生相同的变化为一致性变化，最小的定义			
-					
-
-					
 					//克隆组内全部克隆代码片段发生相同的变化为一致性变化
 					//有问题，数量变化
 					boolean equal = true;
@@ -392,6 +389,7 @@ public class CreateMappingInfo extends Mapping{
 					*/
 					
 					//定义2 克隆组内至少有两个克隆代码片段发生相同的变化为一致性变化，中间的定义						
+					/*
 					boolean Static = true;
 					for(int m=0;m<cgMap.CFMapList.size()-1; m++){
 						float textSim_m = ((CloneFragmentMapping) cgMap.CFMapList.get(m)).textSim;
@@ -417,8 +415,9 @@ public class CreateMappingInfo extends Mapping{
 							cgMap.EvoPattern.setINCONSISTENTCHANGE(true);
 						} 
 					}
+					*/
 					
-					/*
+					
 					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
 					int chanFraCount = 0;
 					int unChagFraCount = 0;
@@ -436,7 +435,7 @@ public class CreateMappingInfo extends Mapping{
 					} else {
 						cgMap.EvoPattern.setINCONSISTENTCHANGE(true); 
 					}
-						 */
+					
 				}
 				
 				//映射上的小于目的克隆组
@@ -461,8 +460,8 @@ public class CreateMappingInfo extends Mapping{
 					}
 					*/
 					
+					/*
 					//定义2 克隆组内至少有两个克隆代码片段发生相同的变化为一致性变化，中间的定义	
-					boolean Static = true;
 					for(int m=0;m<cgMap.CFMapList.size()-1; m++){
 						float textSim_m = ((CloneFragmentMapping) cgMap.CFMapList.get(m)).textSim;
 						for(int n=m+1;n<cgMap.CFMapList.size(); n++){
@@ -485,8 +484,9 @@ public class CreateMappingInfo extends Mapping{
 							cgMap.EvoPattern.setINCONSISTENTCHANGE(true);
 						} 
 					}
+					 */
 					
-					/*
+					
 					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
 					int chanFraCount = 0;
 					for (int k = 0; k < cgMap.CFMapList.size(); k++) {
@@ -498,7 +498,8 @@ public class CreateMappingInfo extends Mapping{
 						cgMap.EvoPattern.setCONSISTENTCHANGE(true);
 					} else {
 						cgMap.EvoPattern.setINCONSISTENTCHANGE(true); 
-					}*/
+					}
+					
 				}
 	            
 				//映射上小于源克隆组
@@ -523,6 +524,7 @@ public class CreateMappingInfo extends Mapping{
 					}
 					*/
 					
+					/*
 					//定义2 克隆组内至少有两个克隆代码片段发生相同的变化为一致性变化，中间的定义	
 					boolean Static = true;
 					for(int m=0;m<cgMap.CFMapList.size()-1; m++){
@@ -545,8 +547,9 @@ public class CreateMappingInfo extends Mapping{
 					} else {
 						if(!cgMap.EvoPattern.isCONSISTENTCHANGE()) {cgMap.EvoPattern.setINCONSISTENTCHANGE(true);} 
 					}
+					*/
 					
-					/*
+
 					//3克隆组内只要同时发生变化就是一致性变化，最大的定义
 					int chanFraCount = 0;
 					for (int k = 0; k < cgMap.CFMapList.size(); k++) {
@@ -558,7 +561,8 @@ public class CreateMappingInfo extends Mapping{
 						cgMap.EvoPattern.setCONSISTENTCHANGE(true);
 					} else {
 						cgMap.EvoPattern.setINCONSISTENTCHANGE(true); 
-					}*/
+					}
+					
 				}
 
 				
